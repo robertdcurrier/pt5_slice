@@ -121,6 +121,7 @@ def process_image_sf(input_file):
     logging.debug("process_image_sf(): Cons: %d" % len(contours))
     return(taxa, frame, contours)
 
+
 def slice_image(input_file):
     """
 	Name:		slice_image
@@ -130,18 +131,32 @@ def slice_image(input_file):
     """
     taxa = validate_taxa(input_file)
     config = get_config()
-    logging.info('process_image_sf(%s)' % taxa)
+    xwin = 100
+    ywin = 100
+    win_w = 2000
+    win_h = 1000
+    gridsize = 50
+    xpos = 0
+    ypos = 0
+    logging.info('slice_image(%s)' % taxa)
 
     # Open still image
     try:
+
         frame = cv2.imread(input_file)
     except:
         logging.warning('slice_image(): Failed to open %s' % input_file)
         return
 
-    #contours, _ = (cv2.findContours(masked, cv2.RETR_EXTERNAL,
-    #                cv2.CHAIN_APPROX_NONE))
-    logging.debug("process_image_sf(): Cons: %d" % len(contours))
+    logging.info('slice_image(%s): Resizing image to %dx%s' % (taxa,win_w,win_h))
+    resized = cv2.resize(frame, [win_w, win_h], interpolation = cv2.INTER_AREA)
+    while ypos < win_h:
+        while xpos < win_w-gridsize:
+            cv2.rectangle(frame,(xpos,ypos),(xpos+gridsize,ypos+gridsize), (255,0,0), 1)
+            xpos = xpos + gridsize
+        xpos = 0
+        ypos = ypos + gridsize
+    cv2.imwrite('gridded.png', frame)
     return
 
 
