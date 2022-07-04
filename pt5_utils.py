@@ -121,6 +121,29 @@ def process_image_sf(input_file):
     logging.debug("process_image_sf(): Cons: %d" % len(contours))
     return(taxa, frame, contours)
 
+def slice_image(input_file):
+    """
+	Name:		slice_image
+    Author: 	robertdcurrier@gmail.com
+    Created:    2022-07-04
+    Modified:   2022-07-04
+    """
+    taxa = validate_taxa(input_file)
+    config = get_config()
+    logging.info('process_image_sf(%s)' % taxa)
+
+    # Open still image
+    try:
+        frame = cv2.imread(input_file)
+    except:
+        logging.warning('slice_image(): Failed to open %s' % input_file)
+        return
+
+    #contours, _ = (cv2.findContours(masked, cv2.RETR_EXTERNAL,
+    #                cv2.CHAIN_APPROX_NONE))
+    logging.debug("process_image_sf(): Cons: %d" % len(contours))
+    return
+
 
 def process_video_sf(args):
     """
