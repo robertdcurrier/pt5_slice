@@ -135,7 +135,7 @@ def slice_image(input_file):
     ywin = 100
     win_w = 2000
     win_h = 1000
-    gridsize = 50
+    gridsize = 100
     xpos = 0
     ypos = 0
     logging.info('slice_image(%s)' % taxa)
@@ -151,12 +151,12 @@ def slice_image(input_file):
     logging.info('slice_image(%s): Resizing image to %dx%s' % (taxa,win_w,win_h))
     resized = cv2.resize(frame, [win_w, win_h], interpolation = cv2.INTER_AREA)
     while ypos < win_h:
-        while xpos < win_w-gridsize:
-            cv2.rectangle(frame,(xpos,ypos),(xpos+gridsize,ypos+gridsize), (255,0,0), 1)
+        while xpos < win_w:
+            cv2.rectangle(resized,(xpos,ypos),(xpos+gridsize,ypos+gridsize), (255,0,0), 1)
             xpos = xpos + gridsize
         xpos = 0
         ypos = ypos + gridsize
-    cv2.imwrite('gridded.png', frame)
+    cv2.imwrite('gridded.png', resized)
     return
 
 
